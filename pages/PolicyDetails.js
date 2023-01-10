@@ -21,6 +21,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import useLocalStorage from '../hooks/useLocalStorage';
 import Router, { useRouter } from 'next/router';
 import { useGlobalContext } from '../context/global';
+import { set } from 'date-fns';
 
 
 
@@ -39,6 +40,7 @@ export default function PolicyDetails() {
   const [validateparkname, setValidateparkname] = React.useState(false);
   const [validateareafloor, setValidateareafloor] = React.useState(false);
   const [validatenumslots, setValidatenumslots] = React.useState(false);
+  const [validatenameslots, setValidatenameslots] = React.useState(false);
  
   const [lengthslot, setLengthslot] = React.useState(false);
 
@@ -137,7 +139,7 @@ export default function PolicyDetails() {
     array.push(i);
   }
   
-
+  
   // const [fieldValues, setFieldValues] = React.useState([]);
 
 
@@ -181,7 +183,17 @@ export default function PolicyDetails() {
     const newParking = [...parkingAreaFields];
     newParking[indexParkingArea] = newArray;
     setparkingAreaFields(newParking);
-    setParkingSlotNames(newParking)
+    setParkingSlotNames(newParking);
+    
+    const hasEmptyValue = checkForEmptyValue(newParking);
+    (hasEmptyValue) ? setValidatenameslots(false) : setValidatenameslots(true);
+
+
+      // console.log(values);
+      // console.log(mapLength);
+      // (slots) ? alert(mapLength) : alert("iz unclicked");
+    
+  
   };
   // Use the map method to create TextField components
   // let textFields = arrayParkingFields[indexParkingFloor].map((value, index) => (
@@ -214,6 +226,17 @@ export default function PolicyDetails() {
   // ));
 
 
+  const checkForEmptyValue = (arr) => {
+    return arr.some((val) => {
+        if (Array.isArray(val)) {
+            return checkForEmptyValue(val);
+        } else {
+            return val === "";
+        }
+    });
+}
+    
+    
 
 
 
@@ -402,13 +425,17 @@ export default function PolicyDetails() {
                             onChange={(event) => handleFieldValuesChange(
                               indexParkingArea - 1,
                               indexParkingFloor - 1,
-                              indexFields - 1, event,
-
+                              indexFields - 1, event
+                              // alert(event.target.value),
+                              // alert(arrayParking[0][0][0][2][0]),
                               // console.log ( indexParkingArea - 1,
                               //   indexParkingFloor - 1,
                               //   indexFields - 1, event,),
                               // alert(indexFields, event.target.value),
+                              // checkingslotsName(),
 
+                              // (hasEmptyValue) ? alert("Array has empty value") : alert("Array does not have any empty value"),
+                            
                               )}
                             variant="outlined"
                             sx={{ backgroundColor: 'white', width: 326 }}
@@ -539,8 +566,9 @@ export default function PolicyDetails() {
         + Add another parking area
       </Button>) : null}
 
-      
-      {validateparkname === true && validateareafloor === true && validatenumslots === true ? setMessage(false) : setMessage(true)}
+      {slots === false ? validateparkname === true && validateareafloor === true && validatenumslots === true ? setMessage(false) : setMessage(true) : validatenameslots ===  true ? setMessage(false) : setMessage(true)}
+    {/* {slots ? validateparkname === true && validateareafloor === true && validatenumslots === true ? (hasEmptyValue) ? setMessage(true) : setMessage(false) : setMessage(true) : validateparkname === true && validateareafloor === true && validatenumslots === true ? setMessage(false) : setMessage(true) } */}
+       {/* {validateparkname === true && validateareafloor === true && validatenumslots === true ? setMessage(false) : setMessage(true)} */}
       
     </React.Fragment>
   );
