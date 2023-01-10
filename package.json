@@ -1,0 +1,38 @@
+{
+  "name": "gapps",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@lexical/react": "^0.6.3",
+    "@mui/icons-material": "^5.10.9",
+    "@mui/material": "^5.10.12",
+    "@mui/styled-engine-sc": "^5.10.6",
+    "@mui/styles": "^5.10.15",
+    "@mui/x-date-pickers": "^5.0.12",
+    "axios": "^1.2.1",
+    "date-fns": "^2.29.3",
+    "dayjs": "^1.11.7",
+    "draft-js": "^0.11.7",
+    "eslint": "8.26.0",
+    "eslint-config-next": "13.0.2",
+    "firebase": "^9.15.0",
+    "html-to-text": "^9.0.3",
+    "lexical": "^0.6.3",
+    "next": "13.0.2",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-draft-wysiwyg": "^1.15.0",
+    "react-dropzone": "^14.2.3",
+    "react-mui-dropzone": "^4.0.6",
+    "react-quill": "^2.0.0",
+    "styled-components": "^5.3.6"
+  }
+}
