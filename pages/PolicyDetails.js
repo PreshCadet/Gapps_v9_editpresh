@@ -42,7 +42,6 @@ export default function PolicyDetails() {
   const [validatenumslots, setValidatenumslots] = React.useState(false);
   const [validatenameslots, setValidatenameslots] = React.useState(false);
  
-  const [lengthslot, setLengthslot] = React.useState(false);
 
   const [parkingArea, setParkingArea] = React.useState([]);
   const handleChangeParkingArea = (index, event) => {
@@ -102,6 +101,7 @@ export default function PolicyDetails() {
     newArraySlots[indexParkingArea] = newSlots;
     setArrayParkingSlots(newArraySlots);
     setParkingAreaSlots(newArraySlots);
+    setValidatenameslots(false);
   };
 
   // const arrayParkingFields = arrayParkingSlots.map((x) =>
@@ -185,7 +185,8 @@ export default function PolicyDetails() {
     setparkingAreaFields(newParking);
     setParkingSlotNames(newParking);
     
-    const hasEmptyValue = checkForEmptyValue(newParking);
+    
+    const hasEmptyValue = checkForEmptyValue(newArray);
     (hasEmptyValue) ? setValidatenameslots(false) : setValidatenameslots(true);
 
 
@@ -297,11 +298,19 @@ export default function PolicyDetails() {
   const [newParkingArea, setNewParkingArea] = React.useState([])
   const addParkingArea = () => {
     setNewParkingArea([...newParkingArea, newParkingArea.length + 1])
+    setValidateareafloor(false)
+    setValidateparkname(false)
+    setValidatenameslots(false)
+    setValidatenumslots(false)
+    
   }
 
   const [newParkingFloor, setNewParkingFloor] = React.useState([])
   const addParkingFloor = () => {
     setNewParkingFloor([...newParkingFloor, newParkingFloor.length + 1])
+    setValidateareafloor(false)
+    setValidatenumslots(false)
+    setValidatenameslots(false)
 
   }
 
@@ -386,7 +395,7 @@ export default function PolicyDetails() {
                     indexParkingFloor - 1,
                     // indexParkingFloorField-1,
                     event,
-                    setLengthslot(event.target.value),
+                    
                   )
                 }
 
