@@ -41,7 +41,7 @@ export default function PolicyDetails() {
   const [validateareafloor, setValidateareafloor] = React.useState(false);
   const [validatenumslots, setValidatenumslots] = React.useState(false);
   const [validatenameslots, setValidatenameslots] = React.useState(false);
-  var numslot;
+  var numslot, floorvalue, slotnamevalue;
 
   const [parkingArea, setParkingArea] = React.useState([]);
   const handleChangeParkingArea = (index, event) => {
@@ -78,8 +78,15 @@ export default function PolicyDetails() {
     setArrayParkingAreaFloor(newArrayFloor);
     setParkingAreaFloor(newArrayFloor);
     
+    floorvalue !== "" ? setValidateareafloor(true) : setValidateareafloor(false); 
+
+    // const hasEmptyValue = checkForEmptyValue(newFloor);
+    // (hasEmptyValue) ? setValidateareafloor(false) : setValidateareafloor(true);
+
     var value = event.target.value;
     value !== "" ? setValidateareafloor(true) : setValidateareafloor(false);
+
+    
  
   };
   
@@ -187,7 +194,8 @@ export default function PolicyDetails() {
     setparkingAreaFields(newParking);
     setParkingSlotNames(newParking);
     
-    
+    slotnamevalue !== "" ?  setValidatenameslots(true) :  setValidatenameslots(false);
+
     const hasEmptyValue = checkForEmptyValue(newArray);
     (hasEmptyValue) ? setValidatenameslots(false) : setValidatenameslots(true);
 
@@ -308,6 +316,7 @@ export default function PolicyDetails() {
     setValidateparkname(false)
     setValidatenameslots(false)
     setValidatenumslots(false)
+
     
   }
 
@@ -316,8 +325,7 @@ export default function PolicyDetails() {
     setNewParkingFloor([...newParkingFloor, newParkingFloor.length + 1])
     setValidateareafloor(false)
     setValidatenumslots(false)
-    setValidatenameslots(false)
-
+    setValidatenameslots(false) 
   }
 
   // const dictionary = {};
@@ -367,6 +375,8 @@ export default function PolicyDetails() {
               <TextField
                 id="outlined-AreaFloor"
                 label="Area Floor"
+                value={floorvalue}
+                defaultValue='P0'
                 // value={areaFloor}
                 // onChange={handleChangeAreaFloor}
                 onChange={(event) =>
@@ -438,6 +448,8 @@ export default function PolicyDetails() {
                           <TextField
                             id="slot-name"
                             key={indexFields}
+                            defaultValue=" "
+                            value={slotnamevalue}
                             onChange={(event) => handleFieldValuesChange(
                               indexParkingArea - 1,
                               indexParkingFloor - 1,
