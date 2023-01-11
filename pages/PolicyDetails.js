@@ -41,7 +41,7 @@ export default function PolicyDetails() {
   const [validateareafloor, setValidateareafloor] = React.useState(false);
   const [validatenumslots, setValidatenumslots] = React.useState(false);
   const [validatenameslots, setValidatenameslots] = React.useState(false);
- 
+  var numslot;
 
   const [parkingArea, setParkingArea] = React.useState([]);
   const handleChangeParkingArea = (index, event) => {
@@ -73,16 +73,17 @@ export default function PolicyDetails() {
     newFloor[indexParkingFloor] = event.target.value
     setAreaFloorField(newFloor);
 
-    var value = event.target.value;
-    value !== "" ? setValidateareafloor(true) : setValidateareafloor(false);
-
     const newArrayFloor = [...arrayParkingAreaFloor];
     newArrayFloor[indexParkingArea] = newFloor;
     setArrayParkingAreaFloor(newArrayFloor);
     setParkingAreaFloor(newArrayFloor);
-
+    
+    var value = event.target.value;
+    value !== "" ? setValidateareafloor(true) : setValidateareafloor(false);
+ 
   };
-
+  
+  
   const [numberOfSlots, setNumberOfSlots] = React.useState([]);
   const [arrayParkingSlots, setArrayParkingSlots] = React.useState([])
 
@@ -93,8 +94,10 @@ export default function PolicyDetails() {
     newSlots[indexParkingFloor] = event.target.value
     setNumberOfSlots(newSlots);
 
+    numslot !== 0 ? setValidatenumslots(true) : setValidatenumslots(false)
     var value = event.target.value;
-    value !== "" ? setValidatenumslots(true) : setValidatenumslots(false);
+    value !== 0 ? value !== "" ? setValidatenumslots(true) : setValidatenumslots(false): setValidatenumslots(false);
+    
     
 
     const newArraySlots = [...arrayParkingSlots];
@@ -138,8 +141,7 @@ export default function PolicyDetails() {
     // Add each number to the array
     array.push(i);
   }
-  
-  
+
   // const [fieldValues, setFieldValues] = React.useState([]);
 
 
@@ -225,6 +227,10 @@ export default function PolicyDetails() {
   //     />
   //   </Box>
   // ));
+
+  function validation() {
+
+  }
 
 
   const checkForEmptyValue = (arr) => {
@@ -384,6 +390,8 @@ export default function PolicyDetails() {
               <TextField
                 id="outlined-number"
                 // label="Number of Slots"
+                defaultValue='0'
+                value={numslot}
                 type='number'
                 InputLabelProps={{
                   shrink: true,
@@ -395,7 +403,6 @@ export default function PolicyDetails() {
                     indexParkingFloor - 1,
                     // indexParkingFloorField-1,
                     event,
-                    
                   )
                 }
 
@@ -576,9 +583,7 @@ export default function PolicyDetails() {
       </Button>) : null}
 
       {slots === false ? validateparkname === true && validateareafloor === true && validatenumslots === true ? setMessage(false) : setMessage(true) : validatenameslots ===  true ? setMessage(false) : setMessage(true)}
-    {/* {slots ? validateparkname === true && validateareafloor === true && validatenumslots === true ? (hasEmptyValue) ? setMessage(true) : setMessage(false) : setMessage(true) : validateparkname === true && validateareafloor === true && validatenumslots === true ? setMessage(false) : setMessage(true) } */}
-       {/* {validateparkname === true && validateareafloor === true && validatenumslots === true ? setMessage(false) : setMessage(true)} */}
-      
+   
     </React.Fragment>
   );
 }
