@@ -41,7 +41,12 @@ export default function PolicyDetails() {
   const [validateareafloor, setValidateareafloor] = React.useState(false);
   const [validatenumslots, setValidatenumslots] = React.useState(false);
   const [validatenameslots, setValidatenameslots] = React.useState(false);
-  var numslot, floorvalue, slotnamevalue;
+
+  const [checkvaluename, setCheckvaluename] = React.useState(false);
+  const [disablearea, setDisablearea] = React.useState(true);
+  const [disableparking, setDisableparking] = React.useState(true);
+  
+ 
 
   const [parkingArea, setParkingArea] = React.useState([]);
   const handleChangeParkingArea = (index, event) => {
@@ -78,10 +83,9 @@ export default function PolicyDetails() {
     setArrayParkingAreaFloor(newArrayFloor);
     setParkingAreaFloor(newArrayFloor);
     
-    floorvalue !== "" ? setValidateareafloor(true) : setValidateareafloor(false); 
-
-    // const hasEmptyValue = checkForEmptyValue(newFloor);
-    // (hasEmptyValue) ? setValidateareafloor(false) : setValidateareafloor(true);
+    //floorvalue !== "P0" ? setValidateareafloor(true) : setValidateareafloor(false); 
+    // const hasEmptyValue = checkForEmptyValue(newArrayFloor);
+    // (hasEmptyValue) ? alert("has empty in array") : alert("has no empty array");
 
     var value = event.target.value;
     value !== "" ? setValidateareafloor(true) : setValidateareafloor(false);
@@ -100,18 +104,44 @@ export default function PolicyDetails() {
     const newSlots = [...numberOfSlots]
     newSlots[indexParkingFloor] = event.target.value
     setNumberOfSlots(newSlots);
-
-    numslot !== 0 ? setValidatenumslots(true) : setValidatenumslots(false)
+  
     var value = event.target.value;
-    value !== 0 ? value !== "" ? setValidatenumslots(true) : setValidatenumslots(false): setValidatenumslots(false);
-    
-    
+    if (value !== 0) { 
+      if (value !== "") { 
+        setValidatenumslots(true),
+        setDisablearea(false),
+        setDisableparking(false)
+      } 
+        else { 
+          setValidatenumslots(false),
+          setDisablearea(true),
+          setDisableparking(true)
+        }}     
+    else{ 
+      setValidatenumslots(false),
+      setDisablearea(true),
+      setDisableparking(true)
+    }
 
+    setCheckvaluename(value);
+    
+    
     const newArraySlots = [...arrayParkingSlots];
     newArraySlots[indexParkingArea] = newSlots;
     setArrayParkingSlots(newArraySlots);
     setParkingAreaSlots(newArraySlots);
     setValidatenameslots(false);
+    
+
+    // alert(newArraySlots.some((x) => x === 1))
+    console.log(newArraySlots)
+
+    
+    // alert(newArraySlots)
+    const hasEmptyValue = checkForEmptyValue(newArraySlots);
+    (hasEmptyValue) ? setValidatenumslots(false) : setValidatenumslots(true);
+
+    
   };
 
   // const arrayParkingFields = arrayParkingSlots.map((x) =>
@@ -139,6 +169,13 @@ export default function PolicyDetails() {
       ...state,
       [event.target.name]: event.target.checked,
     });
+    if (!slots) { 
+      setDisablearea(true),
+      setDisableparking(true)
+    }
+    else{ 
+      setDisablearea(false),
+      setDisableparking(false)} ;
   };
 
   const { slots } = state;
@@ -194,10 +231,24 @@ export default function PolicyDetails() {
     setparkingAreaFields(newParking);
     setParkingSlotNames(newParking);
     
-    slotnamevalue !== "" ?  setValidatenameslots(true) :  setValidatenameslots(false);
-
-    const hasEmptyValue = checkForEmptyValue(newArray);
-    (hasEmptyValue) ? setValidatenameslots(false) : setValidatenameslots(true);
+    
+    
+    if (newFieldValues.length == checkvaluename) { 
+        const hasEmptyValue = checkForEmptyValue(newArray);
+    
+        if (hasEmptyValue) { setDisablearea(true), setValidatenameslots(false), setDisableparking(true) }
+        else{ 
+          setDisablearea(false);
+          setMessage(false);
+          setValidatenameslots(true);
+          setDisableparking(false);
+      
+        }
+  
+  }
+    else {setDisablearea(true), setValidatenameslots(false), setDisableparking(true) }
+    
+  
 
 
       // console.log(values);
@@ -243,11 +294,12 @@ export default function PolicyDetails() {
 
   const checkForEmptyValue = (arr) => {
     return arr.some((val) => {
+  
         if (Array.isArray(val)) {
-            return checkForEmptyValue(val);
-        } else {
-            return val === "";
-        }
+          return checkForEmptyValue(val);
+      } else {
+          return val === "";
+      }
     });
 }
     
@@ -326,6 +378,8 @@ export default function PolicyDetails() {
     setValidateareafloor(false)
     setValidatenumslots(false)
     setValidatenameslots(false) 
+    setDisablearea(true)
+    
   }
 
   // const dictionary = {};
@@ -375,8 +429,7 @@ export default function PolicyDetails() {
               <TextField
                 id="outlined-AreaFloor"
                 label="Area Floor"
-                value={floorvalue}
-                defaultValue='P0'
+                // defaultValue='P0'
                 // value={areaFloor}
                 // onChange={handleChangeAreaFloor}
                 onChange={(event) =>
@@ -401,7 +454,6 @@ export default function PolicyDetails() {
                 id="outlined-number"
                 // label="Number of Slots"
                 defaultValue='0'
-                value={numslot}
                 type='number'
                 InputLabelProps={{
                   shrink: true,
@@ -448,12 +500,10 @@ export default function PolicyDetails() {
                           <TextField
                             id="slot-name"
                             key={indexFields}
-                            defaultValue=" "
-                            value={slotnamevalue}
                             onChange={(event) => handleFieldValuesChange(
                               indexParkingArea - 1,
                               indexParkingFloor - 1,
-                              indexFields - 1, event
+                              indexFields - 1, event,
                               // alert(event.target.value),
                               // alert(arrayParking[0][0][0][2][0]),
                               // console.log ( indexParkingArea - 1,
@@ -461,8 +511,9 @@ export default function PolicyDetails() {
                               //   indexFields - 1, event,),
                               // alert(indexFields, event.target.value),
                               // checkingslotsName(),
-
-                              // (hasEmptyValue) ? alert("Array has empty value") : alert("Array does not have any empty value"),
+                              
+                              
+                              // checkForEmptyValue(areaFloorField) ? alert("Array has empty value") : alert("Array does not have any empty value"),
                             
                               )}
                             variant="outlined"
@@ -491,7 +542,7 @@ export default function PolicyDetails() {
         </Box>
 
         {/* </Box> */}
-        <Button variant='text' sx={{ textDecoration: 'underline', ml: '2%' }} onClick={addParkingFloor}>
+        <Button variant='text' sx={{ textDecoration: 'underline', ml: '2%' }} onClick={addParkingFloor} disabled ={disablearea}>
           + Add another area floor
         </Button>
       </Paper>
@@ -590,11 +641,11 @@ export default function PolicyDetails() {
           </Paper>)
         : null
       } */}
-      {addParking === "list" ? (<Button variant='text' sx={{ textDecoration: 'underline' }} onClick={addParkingArea}>
+      {addParking === "list" ? (<Button variant='text' sx={{ textDecoration: 'underline' }} onClick={addParkingArea} disabled={disableparking}>
         + Add another parking area
       </Button>) : null}
 
-      {slots === false ? validateparkname === true && validateareafloor === true && validatenumslots === true ? setMessage(false) : setMessage(true) : validatenameslots ===  true ? setMessage(false) : setMessage(true)}
+      {slots === false ? validateparkname === true && validateareafloor === true && validatenumslots === true ? setMessage(false) : setMessage(true) : validateparkname === true && validateareafloor === true && validatenumslots === true && validatenameslots ===  true ? setMessage(false) : setMessage(true)}
    
     </React.Fragment>
   );
